@@ -72,9 +72,9 @@ namespace Context
 	class Cheat final
 	{
 	public:
-		Cheat(const wchar_t* processName) : m_currentRessource(Ressources::GOLD), m_ressourceAmount(0), m_hProc(INVALID_HANDLE_VALUE), m_goldAddress(0)
+		Cheat() : m_currentRessource(Ressources::GOLD), m_ressourceAmount(0), m_hProc(INVALID_HANDLE_VALUE), m_goldAddress(0)
 		{
-			DWORD pid = handleMemory::getPidByName(processName);
+			DWORD pid = handleMemory::getPidByName(L"Darkest.exe");
 			if (pid == 0)
 			{
 				std::cerr << "Process not found!" << std::endl;
