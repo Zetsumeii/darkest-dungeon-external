@@ -113,10 +113,7 @@ namespace Context
 				std::cerr << "Process handle is invalid!" << std::endl;
 				return;
 			}
-			if (!ReadProcessMemory(m_hProc, reinterpret_cast<LPCVOID>(m_goldAddress + (ressourcesOffset * static_cast<uint32_t>(m_currentRessource))), &m_ressourceAmount, sizeof(m_ressourceAmount), nullptr))
-			{
-				std::cerr << "Failed." << std::endl;
-			}
+			m_ressourceAmount = handleMemory::readMemory<SIZE_T>(m_hProc, m_goldAddress + (ressourcesOffset * static_cast<uint32_t>(m_currentRessource)));
 		}
 
 		[[nodiscard]] std::size_t getRessourceAmount() const
@@ -151,11 +148,13 @@ namespace Context
 				std::cerr << "Process handle is invalid!" << std::endl;
 				return;
 			}
-			if (!WriteProcessMemory(m_hProc, reinterpret_cast<LPVOID>(m_goldAddress + (ressourcesOffset * static_cast<uint32_t>(m_currentRessource))), &amount, sizeof(amount), nullptr))
+			if (handleMemory::writeMemory<SIZE_T>(m_hProc, m_goldAddress + (ressourcesOffset * static_cast<uint32_t>(m_currentRessource)), amount))
 			{
-				std::cerr << "Failed." << std::endl;
+				m_ressourceAmount = amount;
+				return;
+			} else {
+				std::cerr << "Failed to write memory!" << std::endl;
 			}
-			m_ressourceAmount = amount;
 		}
 
 	private:
